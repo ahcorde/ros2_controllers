@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ros_controllers/trajectory.hpp"
+#include "joint_trajectory_controller/trajectory.hpp"
 
 #include <memory>
 
@@ -21,7 +21,7 @@
 
 #include "rclcpp/clock.hpp"
 
-namespace ros_controllers
+namespace joint_trajectory_controller
 {
 
 // TODO(karsten1987): Fix to rclcpp time when API stable.
@@ -53,7 +53,7 @@ Trajectory::update(std::shared_ptr<trajectory_msgs::msg::JointTrajectory> joint_
 TrajectoryPointConstIter
 Trajectory::sample(const rclcpp::Time & sample_time)
 {
-  THROW_ON_NULLPTR(trajectory_msg_)
+  THROW_ON_NULLPTR(trajectory_msg_.get())
 
   // skip if current time hasn't reached traj time of the first msg yet
   if (time_less_than(sample_time, trajectory_start_time_)) {
@@ -74,7 +74,7 @@ Trajectory::sample(const rclcpp::Time & sample_time)
 TrajectoryPointConstIter
 Trajectory::begin() const
 {
-  THROW_ON_NULLPTR(trajectory_msg_)
+  THROW_ON_NULLPTR(trajectory_msg_.get())
 
   return trajectory_msg_->points.begin();
 }
@@ -82,7 +82,7 @@ Trajectory::begin() const
 TrajectoryPointConstIter
 Trajectory::end() const
 {
-  THROW_ON_NULLPTR(trajectory_msg_)
+  THROW_ON_NULLPTR(trajectory_msg_.get())
 
   return trajectory_msg_->points.end();
 }
@@ -99,4 +99,4 @@ Trajectory::is_empty() const
   return !trajectory_msg_;
 }
 
-}  // namespace ros_controllers
+}  // namespace joint_trajectory_controller
